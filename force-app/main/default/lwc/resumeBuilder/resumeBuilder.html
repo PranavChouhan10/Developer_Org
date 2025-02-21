@@ -1,0 +1,831 @@
+<template>
+    <div class="slds-box slds-theme_default">
+
+        <lightning-layout>
+            <lightning-layout-item>
+                <lightning-vertical-navigation selected-item={selectedItem} onselect={handleSelect} class="navigation">
+                    <lightning-vertical-navigation-section label="Details">
+                        <lightning-vertical-navigation-item-icon label="Profile" name="profile"
+                            icon-name="standard:contact"></lightning-vertical-navigation-item-icon>
+                        <lightning-vertical-navigation-item-icon label="Summary" name="summary"
+                            icon-name="standard:work_summary"></lightning-vertical-navigation-item-icon>
+                        <lightning-vertical-navigation-item-icon label="Education" name="education"
+                            icon-name="standard:education"></lightning-vertical-navigation-item-icon>
+                        <lightning-vertical-navigation-item-icon label="Experience" name="experience"
+                            icon-name="standard:workspace"></lightning-vertical-navigation-item-icon>
+                        <lightning-vertical-navigation-item-icon label="Projects" name="projects"
+                            icon-name="standard:task"></lightning-vertical-navigation-item-icon>
+                        <lightning-vertical-navigation-item-icon label="Skills" name="skills"
+                            icon-name="standard:skill"></lightning-vertical-navigation-item-icon>
+                        <lightning-vertical-navigation-item-icon label="Certifications" name="certifications"
+                            icon-name="standard:attach"></lightning-vertical-navigation-item-icon>
+                        <lightning-vertical-navigation-item-icon label="Overview" name="overview"
+                            icon-name="standard:document_preview"></lightning-vertical-navigation-item-icon>
+                    </lightning-vertical-navigation-section>
+                </lightning-vertical-navigation>
+            </lightning-layout-item>
+
+            <template if:true={showProfile}>
+                <lightning-layout-item padding="around-medium" class="layout-item layoutWidth">
+                    <span class="slds-col slds-size_12-of-12 sectionHeading">Profile :</span>
+
+
+
+                    <div class="slds-grid slds-gutters slds-wrap infoFieldsDiv">
+
+                        <div class="slds-col slds-size_12-of-12 profileImageDiv">
+                            <div class="imageUploadButton">
+                                <lightning-button-icon icon-name="action:add_photo_video" onclick={showModalBox}
+                                    variant="bare" alternative-text="Upload"></lightning-button-icon>
+                            </div>
+
+                            <img src={imageUrl} alt="Uploaded Image" class="circle-image" />
+                        </div>
+
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input type="text" label="First Name" name="firstname" value={profile.firstname}
+                                onchange={handleProfile}></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input type="text" label="Last Name" name="lastname" value={profile.lastname}
+                                onchange={handleProfile}></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12 ">
+                            <lightning-input type="email" label="Email" name="email" value={profile.email}
+                                onchange={handleProfile}></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12 ">
+                            <lightning-input type="tel" label="Phone" name="phone" value={profile.phone}
+                                pattern="[0-9]{10}" onchange={handleProfile}></lightning-input>
+                        </div>
+                    </div>
+
+                </lightning-layout-item>
+            </template>
+
+            <template if:true={showSummary}>
+                <lightning-layout-item padding="around-medium" class="layout-item layoutWidth">
+                    <div class="slds-grid slds-gutters slds-wrap">
+                        <span class="slds-col slds-size_12-of-12 sectionHeading">Summary :</span>
+                        <div class="slds-col slds-size_12-of-12 textArea">
+                            <lightning-textarea name="summary" value={profile.summary} placeholder="About yourself"
+                                maxlength="400" message-when-too-long="A maximum of 400 characters are allowed."
+                                message-when-value-missing="An empty summary cannot be posted."
+                                onchange={handleProfile}></lightning-textarea>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+            </template>
+
+            <template if:true={showEducation}>
+                <lightning-layout-item padding="around-medium"
+                    class="layout-item slds-grid slds-gutters slds-wrap layoutWidth">
+                    <span class="slds-col slds-size_8-of-12 sectionHeading">Education :</span>
+
+                    <template if:true={isGraduation}>
+                        <div class="slds-col slds-size_2-of-12 graduationCheckbox">
+                            <lightning-input style="position: relative;left: 36px;" type="checkbox"
+                                label="Add Graduation" name="postGraduation" onchange={handleGraduationCheckboxChange}
+                                value={isGraduation} checked></lightning-input>
+                        </div>
+                    </template>
+
+                    <template if:false={isGraduation}>
+                        <div class="slds-col slds-size_2-of-12 graduationCheckbox">
+                            <lightning-input style="position: relative;left: 36px;" type="checkbox"
+                                label="Add Graduation" name="postGraduation" onchange={handleGraduationCheckboxChange}
+                                value={isGraduation}></lightning-input>
+                        </div>
+                    </template>
+
+                    <template if:true={ispostGraduation}>
+                        <div class="slds-col slds-size_2-of-12">
+                            <lightning-input style="position: relative;left: 36px;" type="checkbox"
+                                label="Add Post Graduation" name="postGraduation"
+                                onchange={handlepostGraduationCheckboxChange} value={ispostGraduation}
+                                checked></lightning-input>
+                        </div>
+                    </template>
+
+                    <template if:false={ispostGraduation}>
+                        <div class="slds-col slds-size_2-of-12">
+                            <lightning-input style="position: relative;left: 36px;" type="checkbox"
+                                label="Add Post Graduation" name="postGraduation"
+                                onchange={handlepostGraduationCheckboxChange}
+                                value={ispostGraduation}></lightning-input>
+                        </div>
+                    </template>
+
+                    <lightning-accordion class="slds-col slds-size_12-of-12">
+                        <lightning-accordion-section name="seniorSecondary" label="Senior Secondary">
+                            <div class="slds-grid slds-gutters slds-wrap eduDiv">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="text" name="seniorsecondaryInstitute" label="Institution"
+                                        value={education.seniorsecondaryInstitute}
+                                        onchange={handleEducationChange}></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="text" label="Stream" name="stream" value={education.stream}
+                                        onchange={handleEducationChange}></lightning-input>
+                                </div>
+                                <template if:false={seniorSecondaryMarks}>
+                                    <div class="slds-col slds-size_3-of-12">
+                                        <lightning-input type="number" name="seniorsecondaryPercentage"
+                                            label="Enter Percentage/CGPA" max="100"
+                                            value={education.seniorsecondaryPercentage} step="0.01"
+                                            onchange={handleEducationChange}></lightning-input>
+                                    </div>
+                                </template>
+                                <template if:true={seniorSecondaryMarks}>
+                                    <div class="slds-col slds-size_3-of-12">
+                                        <lightning-input type="number" name="seniorsecondaryPercentage"
+                                            label="Enter Percentage/CGPA" max="10"
+                                            value={education.seniorsecondaryPercentage} step="0.01"
+                                            onchange={handleEducationChange}></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_3-of-12">
+                                    <lightning-combobox name="seniorsecondaryMarksType" label="Select Percentage/CGPA"
+                                        value={education.seniorsecondaryMarksType} placeholder="Select Percentage/CGPA"
+                                        options={options} onchange={handleEducationChange}></lightning-combobox>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="date" name="seniorsecondaryStartDate" label="Start Date"
+                                        value={education.seniorsecondaryStartDate} max={currentDate}
+                                        onchange={handleEducationChange}></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="date" name="seniorsecondaryEndDate" label="End Date"
+                                        value={education.seniorsecondaryEndDate}
+                                        min={education.seniorsecondaryStartDate} onchange={handleEducationChange}
+                                        max={currentDate}></lightning-input>
+                                </div>
+                            </div>
+                        </lightning-accordion-section>
+
+                        <template if:true={isGraduation}>
+                            <lightning-accordion-section name="graduation" label="Graduation">
+                                <div class="slds-grid slds-gutters slds-wrap eduDiv">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input type="text" label="Institution" name="graduationInstitute"
+                                            value={graduationEducation.graduationInstitute}
+                                            onchange={handleGraduationEducationChange}></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-combobox name="graduationDegree" label="Select Bachelor Degree"
+                                            placeholder="Choose a degree" value={graduationEducation.graduationDegree}
+                                            options={graduationDegreeOptions}
+                                            onchange={handleGraduationEducationChange}>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input type="text" label="Branch" name="graduationBranch"
+                                            value={graduationEducation.graduationBranch}
+                                            onchange={handleGraduationEducationChange}></lightning-input>
+                                    </div>
+                                    <template if:false={graduationMarks}>
+                                        <div class="slds-col slds-size_3-of-12">
+                                            <lightning-input type="number" name="graduationPercentage"
+                                                label="Enter Percentage/CGPA" max="100"
+                                                value={graduationEducation.graduationPercentage} step="0.01"
+                                                onchange={handleGraduationEducationChange}></lightning-input>
+                                        </div>
+                                    </template>
+                                    <template if:true={graduationMarks}>
+                                        <div class="slds-col slds-size_3-of-12">
+                                            <lightning-input type="number" name="graduationPercentage"
+                                                label="Enter Percentage/CGPA" max="10"
+                                                value={graduationEducation.graduationPercentage} step="0.01"
+                                                onchange={handleGraduationEducationChange}></lightning-input>
+                                        </div>
+                                    </template>
+                                    <div class="slds-col slds-size_3-of-12">
+                                        <lightning-combobox name="graduationMarksType" label="Select Percentage/CGPA"
+                                            value={graduationEducation.graduationMarksType}
+                                            placeholder="Select Percentage/CGPA" options={options}
+                                            onchange={handleGraduationEducationChange}></lightning-combobox>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input type="date" name="graduationStartDate" label="Start Date"
+                                            value={graduationEducation.graduationStartDate}
+                                            min={graduationEducation.seniorsecondaryEndDate} max={currentDate}
+                                            onchange={handleGraduationEducationChange}></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" name="graduationEndDate" label="End Date"
+                                            value={graduationEducation.graduationEndDate}
+                                            min={graduationEducation.graduationStartDate}
+                                            onchange={handleGraduationEducationChange} max={currentDate}
+                                            disabled={graduationEducation.graduationPresent}></lightning-input>
+                                    </div>
+                                    <template if:false={ispostGraduation}>
+                                        <div class="slds-col slds-size_1-of-12 checkbox">
+                                            <lightning-input type="checkbox" label="Present" name="graduationPresent"
+                                                checked={graduationEducation.graduationPresent}
+                                                onchange={handleGraduationEducationChange}></lightning-input>
+                                        </div>
+                                    </template>
+
+                                    <template if:true={ispostGraduation}>
+                                        <div class="slds-col slds-size_1-of-12 checkbox">
+                                            <lightning-input type="checkbox" label="Present" name="graduationPresent"
+                                                checked={graduationEducation.graduationPresent}
+                                                onchange={handleGraduationEducationChange} disabled></lightning-input>
+                                        </div>
+                                    </template>
+                                </div>
+                            </lightning-accordion-section>
+                        </template>
+
+                        <template if:true={ispostGraduation}>
+                            <lightning-accordion-section name="postGraduation" label="Post Graduation">
+                                <div class="slds-grid slds-gutters slds-wrap eduDiv">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input type="text" label="Institution" name="postGraduationInstitute"
+                                            value={postgraduationEducation.postGraduationInstitute}
+                                            onchange={handlePostGraduationEducationChange}></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-combobox name="postGraduationDegree" label="Select Master's Degree"
+                                            placeholder="Choose a degree"
+                                            value={postgraduationEducation.postGraduationDegree}
+                                            options={postGraduationDegreeOptions}
+                                            onchange={handlePostGraduationEducationChange}>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input type="text" label="Branch" name="postGraduationbranch"
+                                            value={postgraduationEducation.postGraduationbranch}
+                                            onchange={handlePostGraduationEducationChange}></lightning-input>
+                                    </div>
+                                    <template if:false={postGraduationMarks}>
+                                        <div class="slds-col slds-size_3-of-12">
+                                            <lightning-input type="number" name="postGraduationPercentage"
+                                                label="Enter Percentage/CGPA" max="100"
+                                                value={postgraduationEducation.postGraduationPercentage} step="0.01"
+                                                onchange={handlePostGraduationEducationChange}></lightning-input>
+                                        </div>
+                                    </template>
+                                    <template if:true={postGraduationMarks}>
+                                        <div class="slds-col slds-size_3-of-12">
+                                            <lightning-input type="number" name="postGraduationPercentage"
+                                                label="Enter Percentage/CGPA" max="10"
+                                                value={postgraduationEducation.postGraduationPercentage} step="0.01"
+                                                onchange={handlePostGraduationEducationChange}></lightning-input>
+                                        </div>
+                                    </template>
+                                    <div class="slds-col slds-size_3-of-12">
+                                        <lightning-combobox name="postGraduationMarksType"
+                                            label="Select Percentage/CGPA"
+                                            value={postgraduationEducation.postGraduationMarksType}
+                                            placeholder="Select Percentage/CGPA" options={options}
+                                            onchange={handlePostGraduationEducationChange}></lightning-combobox>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <lightning-input type="date" name="postGraduationStartDate" label="Start Date"
+                                            value={postgraduationEducation.postGraduationStartDate} max={currentDate}
+                                            min={education.graduationEndDate}
+                                            onchange={handlePostGraduationEducationChange}></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" name="postGraduationEndDate" label="End Date"
+                                            value={postgraduationEducation.postGraduationEndDate}
+                                            min={postgraduationEducation.postGraduationStartDate}
+                                            onchange={handlePostGraduationEducationChange} max={currentDate}
+                                            disabled={postgraduationEducation.postGraduationPresent}></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-12 checkbox">
+                                        <lightning-input type="checkbox" label="Present" name="postGraduationPresent"
+                                            checked={postgraduationEducation.postGraduationPresent}
+                                            onchange={handlePostGraduationEducationChange}></lightning-input>
+                                    </div>
+                                </div>
+                            </lightning-accordion-section>
+                        </template>
+                    </lightning-accordion>
+
+
+                </lightning-layout-item>
+            </template>
+
+            <template if:true={showExperience}>
+                <lightning-layout-item padding="around-medium"
+                    class="layout-item slds-grid slds-gutters slds-wrap layoutWidth">
+
+                    <span class="slds-col slds-size_10-of-12 sectionHeading">Experience :</span>
+
+                    <template if:false={showExpAddButton}>
+                        <div class="slds-col slds-size_2-of-12 addButton">
+                            <lightning-button icon-name="action:new" label="Add Experience"
+                                onclick={addExperience}></lightning-button>
+                        </div>
+                    </template>
+
+                    <template if:true={showExpAddButton}>
+                        <div class="addButton-rectangle">
+                            <lightning-button icon-name="action:new" variant="base" label="Add Experience"
+                                onclick={addExperience}></lightning-button>
+                        </div>
+                    </template>
+
+                    <div class="slds-col slds-size_12-of-12 infoFieldsDiv">
+                        <template for:each={indexedExperience} for:item="exp" for:index="indx">
+                            <div key={exp.id} class="slds-grid slds-gutters slds-wrap loopDiv">
+                                <div class="slds-col slds-size_11-of-12">
+                                    <span class="subSectionHeading">Experience: {exp.displayIndex}</span>
+                                </div>
+                                <div class="slds-col removeButton slds-size_1-of-12">
+                                    <lightning-button-icon icon-name="utility:delete" onclick={removeExperience}
+                                        data-id={exp.id} variant="container" alternative-text="Delete"
+                                        class="slds-m-left_xx-small" title="Delete"></lightning-button-icon>
+                                </div>
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="text" label="Company" name="company" value={exp.company}
+                                        onchange={handleExperienceChange} data-id={exp.id}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="text" label="Role" name="role" value={exp.role}
+                                        onchange={handleExperienceChange} data-id={exp.id}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="date" name="from" label="From" value={exp.from}
+                                        onchange={handleExperienceChange} max={currentDate}
+                                        data-id={exp.id}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="date" name="to" label="To" value={exp.to} min={exp.from}
+                                        onchange={handleExperienceChange} data-id={exp.id} max={currentDate}
+                                        disabled={exp.present}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-12 checkbox">
+                                    <lightning-input type="checkbox" label="Present" name="present"
+                                        checked={exp.present} data-id={exp.id} onchange={handleExperienceChange}
+                                        disabled={exp.disablePresentCheckbox}>
+                                    </lightning-input>
+
+                                </div>
+
+                                <div class="slds-col slds-size_12-of-12 slds-p-top_medium richTextBox">
+                                    <lightning-input-rich-text class="custom-rich-text" name="summary" label="Summary"
+                                        value={exp.summary} onchange={handleExperienceChange} data-id={exp.id}
+                                        placeholder="Summary about experience" valid={expValidity} formats={formats}>
+                                    </lightning-input-rich-text>
+                                </div>
+
+                            </div>
+                        </template>
+                    </div>
+                </lightning-layout-item>
+            </template>
+
+            <!-- Projects Section -->
+            <template if:true={showProjects}>
+                <lightning-layout-item padding="around-medium"
+                    class="layout-item slds-grid slds-gutters slds-wrap layoutWidth">
+
+                    <span class="slds-col slds-size_10-of-12 sectionHeading">Projects :</span>
+                    <template if:false={showProjAddButton}>
+                        <div class="slds-col slds-size_2-of-12 addButton">
+                            <lightning-button icon-name="action:new" label="Add Project"
+                                onclick={addProject}></lightning-button>
+                        </div>
+                    </template>
+
+                    <template if:true={showProjAddButton}>
+                        <div class="addButton-rectangle">
+                            <lightning-button icon-name="action:new" variant="base" label="Add Project"
+                                onclick={addProject}></lightning-button>
+                        </div>
+                    </template>
+
+                    <div class="slds-col slds-size_12-of-12 infoFieldsDiv">
+                        <template for:each={indexedProject} for:item="proj">
+                            <div key={proj.id} class="slds-grid slds-gutters slds-wrap loopDiv">
+
+                                <div class="slds-col slds-size_11-of-12">
+                                    <span class="subSectionHeading">Project: {proj.displayIndex}</span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-12 removeButton">
+                                    <lightning-button-icon icon-name="utility:delete" onclick={removeProject}
+                                        data-id={proj.id} variant="container" alternative-text="Delete"
+                                        class="slds-m-left_xx-small" title="Delete"></lightning-button-icon>
+                                </div>
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="text" label="Project Name" name="projectName"
+                                        value={proj.projectName} onchange={handleProjectChange}
+                                        data-id={proj.id}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_2-of-12">
+                                    <lightning-input type="date" name="from" label="From" value={proj.from}
+                                        onchange={handleProjectChange} max={currentDate}
+                                        data-id={proj.id}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_2-of-12">
+                                    <lightning-input type="date" name="to" label="To" value={proj.to} min={proj.from}
+                                        onchange={handleProjectChange} data-id={proj.id} max={currentDate}
+                                        disabled={proj.present}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_2-of-12 checkbox">
+                                    <lightning-input type="checkbox" label="Present" name="present"
+                                        checked={proj.present} data-id={proj.id} onchange={handleProjectChange}
+                                        disabled={proj.disablePresentCheckbox}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_12-of-12 slds-p-top_medium richTextBox">
+                                    <lightning-input-rich-text class="custom-rich-text" name="summary" label="Summary"
+                                        value={proj.summary} onchange={handleProjectChange} data-id={proj.id}
+                                        placeholder="Summary about project" valid={projValidity} formats={formats}>
+                                    </lightning-input-rich-text>
+                                </div>
+
+                            </div>
+                        </template>
+                    </div>
+                </lightning-layout-item>
+            </template>
+
+            <!-- Skills Section -->
+            <template if:true={showSkills}>
+                <lightning-layout-item padding="around-medium" class="layout-item layoutWidth">
+                    <span class="slds-col slds-size_12-of-12 sectionHeading">Skills :</span>
+                    <div class="slds-grid slds-gutters slds-wrap infoFieldsDiv">
+
+
+
+                        <div class="slds-col slds-size_5-of-12">
+                            <lightning-combobox name="skills" label="Select a Skill" placeholder="Choose a skill"
+                                options={skillsOptions} onchange={handleSkillChange}>
+                            </lightning-combobox>
+                        </div>
+
+                        <!-- Input field for "Other" skill -->
+
+                        <template if:true={isOtherSkillSelected}>
+                            <div class="slds-col slds-size_5-of-12 ">
+                                <lightning-input label="Enter Other Skill" value={otherSkill} maxlength="60"
+                                    onchange={handleOtherSkillChange}>
+                                </lightning-input>
+                            </div>
+                        </template>
+
+
+                        <div class="slds-col slds-size_2-of-12 addSkillButton">
+                            <lightning-button icon-name="action:new" label="Add Skill" class="slds-m-top_small"
+                                onclick={addSkills}>
+                            </lightning-button>
+                        </div>
+
+                        <div class="slds-col slds-size_12-of-12 pillContainerDiv">
+                            <template if:true={pills.length}>
+                                <lightning-pill-container items={pills} onitemremove={removePill}>
+                                </lightning-pill-container>
+                            </template>
+                        </div>
+                    </div>
+
+                </lightning-layout-item>
+            </template>
+
+            <!-- Certifications Section -->
+            <template if:true={showCertifications}>
+                <lightning-layout-item padding="around-medium"
+                    class="layout-item slds-grid slds-gutters slds-wrap layoutWidth">
+
+                    <span class="slds-col slds-size_10-of-12 sectionHeading">Certifications :</span>
+                    <template if:false={showCertAddButton}>
+                        <div class="slds-col slds-size_2-of-12 addButton">
+                            <lightning-button icon-name="action:new" label="Add Certification"
+                                onclick={addCertification}></lightning-button>
+                        </div>
+                    </template>
+
+                    <template if:true={showCertAddButton}>
+                        <div class="addButton-rectangle">
+                            <lightning-button icon-name="action:new" variant="base" label="Add Certification"
+                                onclick={addCertification}></lightning-button>
+                        </div>
+                    </template>
+
+                    <div class="slds-col slds-size_12-of-12 infoFieldsDiv">
+                        <template for:each={indexedCertification} for:item="cert">
+                            <div key={cert.id} class="slds-grid loopDiv slds-gutters slds-wrap ">
+
+                                <div class="slds-col slds-size_11-of-12">
+                                    <span class="subSectionHeading">Certification: {cert.displayIndex}</span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-12 removeButton">
+                                    <lightning-button-icon icon-name="utility:delete" onclick={removeCertification}
+                                        data-id={cert.id} variant="container" alternative-text="Delete"
+                                        class="slds-m-left_xx-small" title="Delete"></lightning-button-icon>
+                                </div>
+
+                                <div class="slds-col slds-size_12-of-12">
+                                    <lightning-input type="text" label="Certification Name" name="name"
+                                        value={cert.name} onchange={handleCertificationChange}
+                                        data-id={cert.id}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="text" label="Issued By" name="issuedBy" value={cert.issuedBy}
+                                        onchange={handleCertificationChange} data-id={cert.id}></lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_6-of-12">
+                                    <lightning-input type="date" label="Issued Date" name="issuedDate"
+                                        value={cert.issuedDate} max={currentDate} onchange={handleCertificationChange}
+                                        data-id={cert.id}></lightning-input>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </lightning-layout-item>
+            </template>
+
+            <template if:true={showOverview}>
+                <lightning-layout-item padding="around-medium" class="layout-item layoutWidth">
+                    <div class="slds-grid slds-gutters slds-wrap overviewDiv">
+                        <span class="slds-col slds-size_11-of-12 sectionHeading">Overview :</span>
+
+                        <div class="slds-col slds-size_1-of-12 downloadButton">
+                            <lightning-button-icon icon-name="utility:download" variant="brand"
+                                alternative-text="Download" onclick={generatePDF}
+                                title="Download"></lightning-button-icon>
+                        </div>
+
+                        <div class="overviewShadedDiv">
+
+                            <div class="slds-grid slds-gutters slds-wrap infoFieldsDiv bottomLine">
+                                <span class="slds-col slds-size_12-of-12 sectionHeading">Profile</span>
+                                <div class="slds-col slds-size_12-of-12 loopDiv">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_10-of-12">
+                                            <b>Name : </b>{profile.firstname} {profile.lastname}
+                                            <br><br>
+                                            <b>Email : </b>{profile.email} <b> | Phone : </b> {profile.phone}
+                                        </div>
+                                        <div class="slds-col slds-size_2-of-12 overviewImageDiv">
+                                            <img src={imageUrl} alt="Uploaded Image" class="circle-image" />
+                                        </div>
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <span class="overviewSummary"><b>Summary : </b>{profile.summary}</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- ====================================================================================================================== -->
+                            <div class="slds-grid slds-gutters slds-wrap infoFieldsDiv bottomLine">
+
+                                <span class="slds-col slds-size_12-of-12 sectionHeading">Education</span>
+
+                                <div class="slds-col slds-size_12-of-12 loopDiv">
+                                    <div class="slds-grid slds-wrap">
+                                        <span class="slds-col slds-size_12-of-12 subSectionHeading">Senior
+                                            Secondary</span>
+                                        <div class="slds-col slds-size_10-of-12">
+                                            <b>Institution : </b>{education.seniorsecondaryInstitute}
+                                        </div>
+                                        <div class="slds-col slds-size_2-of-12 overViewDate">
+                                            {education.seniorsecondaryStartDate} ~ {education.seniorsecondaryEndDate}
+                                        </div>
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <b>Stream : </b>{education.stream}
+                                        </div>
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <b>{education.seniorsecondaryMarksType} :
+                                            </b>{education.seniorsecondaryPercentage}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div if:true={isGraduation} class="slds-col slds-size_12-of-12 loopDiv">
+                                    <div class="slds-grid slds-wrap">
+                                        <span class="slds-col slds-size_12-of-12 subSectionHeading">Graduation</span>
+                                        <div class="slds-col slds-size_10-of-12">
+                                            <b>Institution :</b> {graduationEducation.graduationInstitute}
+                                        </div>
+                                        <div class="slds-col slds-size_2-of-12 overViewDate">
+                                            {graduationEducation.graduationStartDate} ~
+                                            {graduationEducation.graduationEndDate}
+                                        </div>
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <b>Degree : </b>{graduationEducation.graduationDegree}
+                                        </div>
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <b>Branch : </b>{graduationEducation.graduationBranch}
+                                        </div>
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <b>{graduationEducation.graduationMarksType} :
+                                            </b>{graduationEducation.graduationPercentage}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div if:true={ispostGraduation} class="slds-col slds-size_12-of-12 loopDiv">
+                                    <div class="slds-grid slds-wrap">
+                                        <span class="slds-col slds-size_12-of-12 subSectionHeading">Post
+                                            Graduation</span>
+                                        <div class="slds-col slds-size_10-of-12">
+                                            <b>Institution : </b>{postgraduationEducation.postGraduationInstitute}
+                                        </div>
+                                        <div class="slds-col slds-size_2-of-12 overViewDate">
+                                            {postgraduationEducation.postGraduationStartDate} ~
+                                            {postgraduationEducation.postGraduationEndDate}
+                                        </div>
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <b>Degree : </b>{postgraduationEducation.postGraduationDegree}
+                                        </div>
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <b>Branch : </b>{postgraduationEducation.postGraduationbranch}
+                                        </div>
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <b>{postgraduationEducation.postGraduationMarksType} :
+                                            </b>{postgraduationEducation.postGraduationPercentage}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- ====================================================================================================================== -->
+                            <div class="slds-grid slds-gutters slds-wrap infoFieldsDiv bottomLine">
+
+                                <span class="slds-col slds-size_12-of-12 sectionHeading">Experiences</span>
+                                <div class="slds-col slds-size_12-of-12">
+                                    <template for:each={indexedExperience} for:item="exp" for:index="indx">
+                                        <div key={exp.id} class="slds-grid slds-gutters slds-wrap loopDiv">
+                                            <div class="slds-col slds-size_12-of-12">
+                                                <span class="subSectionHeading">Experience: {exp.displayIndex}</span>
+                                            </div>
+
+                                            <div class="slds-col slds-size_10-of-12">
+                                                <b>Company : </b>{exp.company}
+                                            </div>
+
+                                            <div class="slds-col slds-size_2-of-12 overViewDate">
+                                                {exp.from} ~ {exp.to}
+                                            </div>
+
+                                            <div class="slds-col slds-size_12-of-12">
+                                                <b>Role : </b>{exp.role}
+                                            </div>
+
+                                            <div class="slds-col slds-size_12-of-12 overviewSummary">
+                                                <span class="overviewSummary"><b>Summary : </b>
+                                                    <lightning-formatted-rich-text
+                                                        value={exp.summary}></lightning-formatted-rich-text>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+
+                            <!-- ====================================================================================================================== -->
+                            <div class="slds-grid slds-gutters slds-wrap infoFieldsDiv bottomLine">
+
+                                <span class="slds-col slds-size_12-of-12 sectionHeading">Projects</span>
+                                <div class="slds-col slds-size_12-of-12 ">
+                                    <template for:each={indexedProject} for:item="proj">
+                                        <div key={proj.id} class="slds-grid slds-gutters slds-wrap loopDiv">
+
+                                            <div class="slds-col slds-size_11-of-12">
+                                                <span class="subSectionHeading">Project: {proj.displayIndex}</span>
+                                            </div>
+
+                                            <div class="slds-col slds-size_10-of-12">
+                                                <b>Project Name : </b>{proj.projectName}
+                                            </div>
+
+                                            <div class="slds-col slds-size_2-of-12 overViewDate">
+                                                {proj.from} ~ {proj.to}
+                                            </div>
+
+                                            <div class="slds-col slds-size_12-of-12">
+                                                <span class="overviewSummary"><b>Summary : </b>
+                                                    <lightning-formatted-rich-text
+                                                        value={proj.summary}></lightning-formatted-rich-text>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+
+                            <!-- ====================================================================================================================== -->
+                            <div class="slds-grid slds-gutters slds-wrap infoFieldsDiv bottomLine">
+
+                                <span class="slds-col slds-size_12-of-12 sectionHeading">Skills</span>
+                                <div class="slds-col slds-size_12-of-12 ">
+                                    <div class="slds-grid slds-gutters slds-wrap ">
+                                        <template for:each={skills} for:item="skill">
+                                            <div key={skill.id} class="slds-col slds-size_4-of-12 skillBackgroundBox">
+                                                {skill}
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- ====================================================================================================================== -->
+                            <div class="slds-grid slds-gutters slds-wrap infoFieldsDiv bottomLine">
+
+                                <span class="slds-col slds-size_12-of-12 sectionHeading">Certifications</span>
+                                <div class="slds-col slds-size_12-of-12 ">
+                                    <template for:each={indexedCertification} for:item="cert">
+                                        <div key={cert.id} class="slds-grid slds-gutters slds-wrap loopDiv">
+
+                                            <div class="slds-col slds-size_11-of-12">
+                                                <span class="subSectionHeading">Certification:
+                                                    {cert.displayIndex}</span>
+                                            </div>
+
+                                            <div class="slds-col slds-size_10-of-12">
+                                                <b>Certification Name : </b>{cert.name}
+                                            </div>
+
+                                            <div class="slds-col slds-size_2-of-12 overViewDate">
+                                                {cert.issuedDate}
+                                            </div>
+
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <b>Issued By : </b>{cert.issuedBy}
+                                            </div>
+
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <template if:true={showButtons}>
+                            <div class="finalButtons">
+                                <lightning-button label="Cancel" icon-name="utility:close" variant="neutral"
+                                    alternative-text="Cancel" onclick={handleCancelButton}></lightning-button>
+
+                                <lightning-button style="margin-left: 5px;" label="Save" icon-name="action:approval"
+                                    onclick={handleSaveButton} variant="Brand"
+                                    alternative-text="Save"></lightning-button>
+                            </div>
+                        </template>
+                    </div>
+                </lightning-layout-item>
+            </template>
+
+
+        </lightning-layout>
+
+
+
+        <template if:true={isShowModal}>
+
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- modal header start -->
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title="Close" onclick={hideModalBox}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Upload Image</h2>
+                    </header>
+
+                    <!-- modal body start -->
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning-card title="Upload Image" icon-name="custom:custom14">
+                            <div class="slds-m-around_medium">
+                                <lightning-input type="file" accept=".png, .jpg, .jpeg" label="Attachment"
+                                    onchange={openfileUpload}></lightning-input>
+                            </div>
+                            <template if:true={fileData}>
+                                <p>{fileData.filename}</p>
+                            </template>
+                        </lightning-card>
+                    </div>
+
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <!-- modal end -->
+
+    </div>
+</template>

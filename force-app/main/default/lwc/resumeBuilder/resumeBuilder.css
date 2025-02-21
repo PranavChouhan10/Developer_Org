@@ -1,0 +1,197 @@
+:host {
+    --slds-c-textarea-sizing-min-height: 150px;
+}
+
+.layout-item{
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+}
+
+
+.imageUploadButton{
+    position: relative;
+    top: 85px;
+    left: 85px;
+}
+
+.image-div {
+    position: relative;
+    left: 160px;
+    top: -30px;
+}
+.circle-image {
+    position: relative;
+    top: -15px;
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
+    object-fit: cover;
+    border: 2px solid #ddd; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.sectionHeading{
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.subSectionHeading{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.nameDiv{
+    position: relative;
+    top: 15px;
+}
+
+.profileImageDiv{
+    position: relative;
+}
+
+button {
+    margin-top: 10px;
+}
+
+.remove-button {
+    margin-top: 10px;
+    background-color: #e0e0e0;
+    border: 1px solid #d3d3d3;
+}
+
+.removeButton{
+    position: relative;
+    left: 50px;
+    top: -5px;
+}
+
+.addButton{
+    position: relative;
+    right: 15px;    
+    text-align: end;
+}
+
+.infoFieldsDiv{
+    position: relative;
+    padding: 20px;
+}
+
+.loopDiv{
+    padding: 10px
+}
+
+.addSkillButton{
+    position: relative;
+    top: 24px;
+}
+
+.saveBut{
+    padding: 20px;
+    
+}
+
+.checkbox {
+    position: relative;
+    top: 28px;
+}
+
+.addButton-rectangle {
+    width: 1000px;
+    height: 150px;
+    background: rgb(208 208 208 / 40%);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    text-align: center;
+    position: relative;
+    left: 140px;
+    top: 30px;
+  }
+
+.pillContainerDiv{
+    padding: 10px;
+}
+
+.custom-rich-text {
+    width: 100%; /* Ensure the component fills the wrapper */
+}
+
+.skillBackgroundBox{
+    background: #a9ceff;
+    color: #000e3a;
+    border-radius: 10px;
+    text-align: center;
+    margin: 10px;
+    left: 20px;
+    position: relative;
+    overflow-wrap: anywhere;
+    width: 365px;
+}
+
+.finalButtons{
+    margin-block: 20px;
+    margin-left: 1094px;
+}
+
+.downloadButton{
+    position: relative;
+    left: 42px;
+    padding: 10px;
+    bottom: 10px;
+}
+
+.overviewShadedDiv{
+    background: rgb(255, 255, 255);
+    margin-left: 15px;
+    margin-right: 25px;
+    width: 1300px;
+    border-radius: 20px;
+}
+
+.overviewImageDiv{
+    position: relative;
+    text-align: end;
+    bottom: 15px;
+}
+
+.overviewDiv{
+    width: 1300px;
+}
+
+.overviewSummary{
+    overflow-wrap: anywhere;
+}
+
+.bottomLine{
+    border-bottom: 1px solid #131212;
+    border-bottom-left-radius: 30px;
+}
+
+.richTextBox {
+    width: 1260px;
+}
+
+.layoutWidth{
+    width: 1330px;
+}
+
+.textArea{
+    width: 1200px;
+    position: relative;
+    left: 45px;
+    top: 30px;
+}
+
+.graduationCheckbox{
+    text-align: end;
+}
+
+.overViewDate {
+    text-align: end;
+}
